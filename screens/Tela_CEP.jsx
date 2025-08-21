@@ -1,15 +1,15 @@
 import { StyleSheet, View, Text, ScrollView } from "react-native";  
 import { useState } from "react";
 import { InputCEP } from "../components/Inputs";
-import CardCEP from "../components/CardCep.jsx";
+import CardCEP from "../components/CardCep";
 import * as cepService from "../services/cep.js"; 
 
 export default function Tela_CEP() {
     const [cep, setCep] = useState([]);
-    const [logradouro, setLogradouro] = useState("");
-    const [bairro, setBairro] = useState("");
-    const [cidade, setCidade] = useState("");
-    const [estado, setEstado] = useState("");
+    const [street, setStreet] = useState("");
+    const [neighborhood, setNeighborhood] = useState("");
+    const [city, setCity] = useState("");
+    const [state, setState] = useState("");
 
     const exibirDadosCEP = (cep) => {
         if (!cep || cep.length !== 8) return;
@@ -21,18 +21,18 @@ export default function Tela_CEP() {
                 // resposta deve vir no formato:
                 // { cep: "...", logradouro: "...", bairro: "...", cidade: "...", estado: "..." }
                 setCep(resposta.cep);
-                setLogradouro(resposta.logradouro);
-                setBairro(resposta.bairro);
-                setCidade(resposta.cidade);
-                setEstado(resposta.estado);
+                setStreet(resposta.street);
+                setNeighborhood(resposta.neighborhood);
+                setCity(resposta.city);
+                setState(resposta.state);
             })
             .catch((error) => {
                 console.error("Error fetching CEP:", error);
                 setCep("");
-                setLogradouro("");
-                setBairro("");
-                setCidade("");
-                setEstado("");
+                setStreet("");
+                setNeighborhood("");
+                setCity("");
+                setState("");
             });
     };
     return (
@@ -42,10 +42,10 @@ export default function Tela_CEP() {
                 {cep !== "" && (
                     <CardCEP
                         cep={cep}
-                        logradouro={logradouro}
-                        bairro={bairro}
-                        cidade={cidade}
-                        estado={estado}
+                        logradouro={street}
+                        bairro={neighborhood}
+                        cidade={city}
+                        estado={state}
                     />
                 )}
             </ScrollView>

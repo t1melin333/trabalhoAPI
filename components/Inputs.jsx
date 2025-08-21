@@ -42,6 +42,20 @@ export const  InputCEP = ({ onChangeText }) => {
     );
 }
 
+export const InputFeriado = ({ onChangeText }) => {
+  return ( 
+    <View style={styles.container}>
+      <TextInput
+         style={styles.input}
+         maxLength={4}
+         placeholder="Digite o ano"
+         keyboardType="numeric"
+         onChangeText={onChangeText}
+      />
+    </View>
+  )
+}
+
 const styles = StyleSheet.create({
   input:{ 
     height: 40, 
