@@ -1,43 +1,39 @@
-import { StyleSheet, View, ScrollView } from "react-native-web";
+import { StyleSheet, View, ScrollView } from "react-native";
 import { useState } from "react";
 import { InputFeriado } from '../components/Inputs';
-import {CardFeriado} from "../components/CardFeriados";
-import * as feriado from '../services/feriado.js';
+import CardFeriado from "../components/CardFeriados";
+import * as feriadoService from '../services/feriado.js';
 
-export default function Tela_Feriado(){
-    const [data, setData] = useState([]);
-    const [nome, setNome] = useState("");
-    const [tipo, setTipo] = useState("")
+export default function Tela_Feriado() {
+    const [feriados, setFeriados] = useState([]); // aqui guardo a lista inteira
 
-    const exibirFeriados = (ano) => {
-        if (!ano || ano.length !== 4) return;
+    const exibirFeriados = (digito) => {
+        if (!digito || digito.length !== 4) return;
 
-        feriado.getFeriado(ano)
-        .then((resposta) => {
-            console.log(resposta);
+        feriadoService.getFeriado(digito)
+            .then((resposta) => {
+                console.log(resposta);
 
-            setData(resposta.date);
-            setNome(resposta.name);
-            setTipo(resposta.type);
-        })
-        .catch ((error) =>{
-            console.error('Error fetching Ano:', error)
-            setData([]);
-            setNome([]);
-            setTipo([]);
-        });
+                // resposta já deve ser um array de feriados
+                setFeriados(resposta);
+            })
+            .catch((error) => {
+                console.error('Error fetching Ano:', error);
+                setFeriados([]);
+            });
     };
+
     return (
         <View style={styles.container}>
-            <InputFeriado onChangeText={(feriado) => exibirFeriados(feriado.trim())}/>
-
-            <ScrollView style={{ width: '100%'}}>
-                {data.map((data, index) => (
+            <InputFeriado onChangeText={(txt) => exibirFeriados(txt.trim())} />
+            
+            <ScrollView style={{ width: "100%" }}>
+                {feriados.map((feriado, index) => (
                     <CardFeriado
-                    key={index}
-                    date={data}
-                    name={nome}
-                    type={tipo}/>
+                        key={index}
+                        date={feriado.date}
+                        name={feriado.name}
+                    />
                 ))}
             </ScrollView>
         </View>

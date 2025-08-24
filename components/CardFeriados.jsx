@@ -1,11 +1,11 @@
 import { StyleSheet, View, Text } from "react-native";
 
-const CardFeriado = ({ data, nome, tipo}) => {
+const CardFeriado = ({ date, name, type}) => {
     return ( 
         <View style={styles.card}>
-            <Text style={styles.texto}>Data: {data}</Text>
-            <Text style={styles.texto}>Nome: {nome}</Text>
-            <Text style={styles.texto}>Tipo: {tipo}</Text>
+            <Text style={styles.texto}>Data: {date}</Text>
+            <Text style={styles.texto}>Nome: {name}</Text>
+            <Text style={styles.texto}>Tipo: {type}</Text>
         </View>
     );
 }
