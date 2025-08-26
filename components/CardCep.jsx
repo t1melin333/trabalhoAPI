@@ -17,7 +17,7 @@ export default CardCEP;
 const styles = StyleSheet.create({
     card: { 
     width: '100%',
-        backgroundColor: '#f8f8f8',
+        backgroundColor: '#ffc7f8',
         padding: 10,
         margin: 10,
         borderRadius: 5,

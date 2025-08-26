@@ -55,7 +55,20 @@ export const InputFeriado = ({ onChangeText }) => {
     </View>
   )
 }
-
+ 
+export const InputISBN = ({ onChangeText }) => {
+  return (
+    <View style={styles.container}>
+      <TextInput
+        style={styles.input}
+        maxLength={13}
+        placeholder="Digite o ISBN"
+        keyboardType="numeric"
+        onChangeText={onChangeText}
+      />
+    </View>
+  )
+}
 const styles = StyleSheet.create({
   input:{ 
     height: 40, 
