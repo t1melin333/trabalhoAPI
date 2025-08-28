@@ -14,13 +14,13 @@ export default CardCidade;
 const styles = StyleSheet.create({
   card: {
     width: '100%',
-    backgroundColor: '#daacdb',
+    backgroundColor: '#aed1f7ff',
     padding: 10,
     margin: 10,
     borderRadius: 5,
     shadowColor: '#000',
-    flexDirection: 'row',
     justifyContent: 'space-between',
+    flexDirection: 'row',
     shadowOffset: {
       width: 0,
       height: 2,

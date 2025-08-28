@@ -1,46 +1,51 @@
 import { StyleSheet, View, ScrollView } from "react-native";
 import { useState } from "react";
 import { InputCNPJ } from "../components/Inputs";
-import CardCNPJ from "../components/CardCep.jsx";
-import * as cnpjService from "../services/cep.js"; // renomeei pra evitar confusão
+import CardCNPJ from "../components/CardCNPJ.jsx";
+import * as cnpjService from "../services/cnpj.js";
 
 export default function Tela_CNPJ() {
-  const [nomeEmpresa, setNomeEmpresa] = useState("");
-  const [cnpjEmpresa, setCnpjEmpresa] = useState("");
-  const [ufEmpresa, setUfEmpresa] = useState("");
+  const [cnpjs, setCnpjs] = useState([]); // array de objetos { cnpj, nome, uf }
 
-  const exibirDadosCNPJ = (cnpj) => {
-    if (!cnpj || cnpj.length !== 14) return;
+  const exibirDadosCNPJ = (digito) => {
+    if (!digito || digito.length !== 14) return;
 
-    cnpjService.getCNPJ(cnpj)
+    cnpjService.getCNPJ(digito)
       .then((resposta) => {
         console.log(resposta);
 
-        // resposta deve vir no formato:
-        // { razao_social: "...", uf: "...", cnpj: "..." }
-        setNomeEmpresa(resposta.razao_social || resposta.nome);
-        setCnpjEmpresa(resposta.cnpj);
-        setUfEmpresa(resposta.uf);
+        const novaEmpresa = {
+          cnpj: resposta.cnpj,
+          nome: resposta.razao_social || resposta.nome,
+          uf: resposta.uf,
+          nomeFantasia: resposta.nome_fantasia || resposta.nomeFantasia
+        };
+
+        // Evita duplicatas
+        setCnpjs((prev) => {
+          if (prev.some((e) => e.cnpj === novaEmpresa.cnpj)) return prev;
+          return [novaEmpresa, ...prev];
+        });
       })
       .catch((error) => {
-        console.error("Error fetching CNPJ:", error);
-        setNomeEmpresa("");
-        setCnpjEmpresa("");
-        setUfEmpresa("");
+        console.error("Erro ao buscar CNPJ:", error);
       });
   };
 
   return (
     <View style={styles.container}>
-      <InputCNPJ onChangeText={(cnpj) => exibirDadosCNPJ(cnpj.trim())} />
+      <InputCNPJ onChangeText={(txt) => exibirDadosCNPJ(txt.trim())} />
       <ScrollView style={{ width: "100%" }}>
-        {nomeEmpresa !== "" && (
+        {cnpjs.map((empresa, index) => (
           <CardCNPJ
-            nome={nomeEmpresa}
-            cnpj={cnpjEmpresa}
-            uf={ufEmpresa}
+            key={index}
+            cnpj={empresa.cnpj}
+            nome={empresa.nome}
+            uf={empresa.uf}
+            nomeFantasia={empresa.nomeFantasia}
+            
           />
-        )}
+        ))}
       </ScrollView>
     </View>
   );

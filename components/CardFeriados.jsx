@@ -15,12 +15,11 @@ export default CardFeriado
 const styles = StyleSheet.create({
     card: {
       width: '100%',
-      backgroundColor: '#f8f8f8',
+      backgroundColor: '#aed1f7ff',
       padding: 10,
       margin: 10,
       borderRadius: 5,
       shadowColor: '#000',
-      flexDirection: 'row',
       justifyContent: 'space-between',
       shadowOffset: {
         width: 0,

@@ -5,62 +5,48 @@ import CardCEP from "../components/CardCep";
 import * as cepService from "../services/cep.js"; 
 
 export default function Tela_CEP() {
-    const [cep, setCep] = useState([]);
-    const [street, setStreet] = useState("");
-    const [neighborhood, setNeighborhood] = useState("");
-    const [city, setCity] = useState("");
-    const [state, setState] = useState("");
+    const [ceps, setCeps] = useState([]); // Lista de CEPs
 
-    const exibirDadosCEP = (cep) => {
-        if (!cep || cep.length !== 8) return;
+    const exibirDadosCEP = (digito) => {
+        if (!digito || digito.length !== 8) return;
 
-        cepService.getCEP(cep)
+        cepService.getCEP(digito)
             .then((resposta) => {
                 console.log(resposta);
 
-                // resposta deve vir no formato:
-                // { cep: "...", logradouro: "...", bairro: "...", cidade: "...", estado: "..." }
-                setCep(resposta.cep);
-                setStreet(resposta.street);
-                setNeighborhood(resposta.neighborhood);
-                setCity(resposta.city);
-                setState(resposta.state);
+                // Adiciona o novo CEP à lista
+                setCeps((prevCeps) => [resposta, ...prevCeps]);
             })
             .catch((error) => {
-                console.error("Error fetching CEP:", error);
-                setCep("");
-                setStreet("");
-                setNeighborhood("");
-                setCity("");
-                setState("");
+                console.error("Erro ao buscar CEP:", error);
             });
     };
+
     return (
         <View style={styles.container}>
-            <InputCEP onChangeText={(cep) => exibirDadosCEP(cep.trim())} />
+            <InputCEP onChangeText={(txt) => exibirDadosCEP(txt.trim())} />
             <ScrollView style={{ width: "100%" }}>
-                {cep !== "" && (
+                {ceps.map((cepData, index) => (
                     <CardCEP
-                        cep={cep}
-                        logradouro={street}
-                        bairro={neighborhood}
-                        cidade={city}
-                        estado={state}
+                        key={index}
+                        cep={cepData.cep}
+                        street={cepData.street}
+                        neighborhood={cepData.neighborhood}
+                        city={cepData.city}
+                        state={cepData.state}
                     />
-                )}
+                ))}
             </ScrollView>
         </View>
     );
-
 }
 
 const styles = StyleSheet.create({
-    container:
-     {
-    padding: 20,
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'flex-start',
-  },
+    container: {
+        padding: 20,
+        flex: 1,
+        backgroundColor: '#fff',
+        alignItems: 'center',
+        justifyContent: 'flex-start',
+    },
 });

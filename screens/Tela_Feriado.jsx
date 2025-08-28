@@ -5,7 +5,7 @@ import CardFeriado from "../components/CardFeriados";
 import * as feriadoService from '../services/feriado.js';
 
 export default function Tela_Feriado() {
-    const [feriados, setFeriados] = useState([]); // aqui guardo a lista inteira
+    const [feriados, setFeriados] = useState([]); 
 
     const exibirFeriados = (digito) => {
         if (!digito || digito.length !== 4) return;
@@ -14,7 +14,7 @@ export default function Tela_Feriado() {
             .then((resposta) => {
                 console.log(resposta);
 
-                // resposta já deve ser um array de feriados
+                
                 setFeriados(resposta);
             })
             .catch((error) => {
@@ -33,6 +33,7 @@ export default function Tela_Feriado() {
                         key={index}
                         date={feriado.date}
                         name={feriado.name}
+                        type={feriado.type}
                     />
                 ))}
             </ScrollView>
